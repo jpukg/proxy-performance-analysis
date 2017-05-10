@@ -1,0 +1,33 @@
+plugins {
+	id 'java'
+	id 'application'
+    id 'de.undercouch.download' version '3.2.0'
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	cfrVersion = "0_123"
+}
+
+dependencies {
+	compile 'net.bytebuddy:byte-buddy-agent:1.6.0'
+	compile 'net.bytebuddy:byte-buddy:1.6.0'
+	compile files("$buildDir/cfr/cfr_${cfrVersion}.jar") {
+		builtBy 'downloadDecompiler'
+	}
+}
+
+import de.undercouch.gradle.tasks.download.Download
+task downloadDecompiler(type: Download) {
+	overwrite true
+	onlyIfNewer true
+	src "http://www.benf.org/other/cfr/cfr_${cfrVersion}.jar"
+	dest "$buildDir/cfr/cfr_${cfrVersion}.jar"
+}
+
+mainClassName = 'reegnz.reflection.ReflectionInspect'
+
+run.workingDir "$buildDir"
