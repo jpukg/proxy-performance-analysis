@@ -12,11 +12,9 @@ class ProxyExperiment {
 		this.exporter = exporter;
 	}
 
-	void doExperiments() {
+	void doExperiment(String interfaceName) {
 		try {
-			process(Class.forName("java.lang.Iterable"));
-			process(Class.forName("java.util.Iterator"));
-			process(Class.forName("java.sql.ResultSet"));
+			process(Class.forName(interfaceName));
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
